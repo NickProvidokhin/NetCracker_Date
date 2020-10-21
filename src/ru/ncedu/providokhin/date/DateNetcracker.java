@@ -3,12 +3,12 @@ package ru.ncedu.providokhin.date;
 import java.time.LocalDate;
 import java.util.*;
 
-public class Date_Netcracker {
-    public int year;
-    public int month;
-    public int day;
+public class DateNetcracker {
+    private int year;
+    private int month;
+    private int day;
 
-    public Date_Netcracker(int year, int month, int day) {
+    public DateNetcracker(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -40,9 +40,9 @@ public class Date_Netcracker {
 
     public boolean isLeapYear() {
 
-        int multipleof100 = 100;
-        int multipleof400 = 400;
-        int multipleof4 = 4;
+        final int multipleof100 = 100;
+        final int multipleof400 = 400;
+        final int multipleof4 = 4;
         if ((year % multipleof400 == 0) || (year % multipleof4 == 0) && (year % multipleof100 != 0)) {
             return true;
         } else {
@@ -51,21 +51,21 @@ public class Date_Netcracker {
     }
 
     public boolean isValidDate() {
-        int MIN = 0;//количество дней, месяцев и лет не может быть меньше нуля
-        int MAX_COUNT_OF_MONTH = 12;
-        int MAX_COUNT_OF_DAY = 31;
-        ArrayList<Integer> MONTH_WHICH_MAX_30_DAYS = new ArrayList<Integer>();
-        MONTH_WHICH_MAX_30_DAYS.add(4);
-        MONTH_WHICH_MAX_30_DAYS.add(6);
-        MONTH_WHICH_MAX_30_DAYS.add(9);
-        MONTH_WHICH_MAX_30_DAYS.add(11);
+        final int MIN = 0;//количество дней, месяцев и лет не может быть меньше нуля
+        final int MAX_COUNT_OF_MONTH = 12;
+        final int MAX_COUNT_OF_DAY = 31;
+        ArrayList<Integer> monthWhichMax30Days = new ArrayList<Integer>();
+        monthWhichMax30Days.add(4);
+        monthWhichMax30Days.add(6);
+        monthWhichMax30Days.add(9);
+        monthWhichMax30Days.add(11);
         int MAX_COUNT_DAYS_OF_LEAP_YEAR = 29;
         int MAX_COUNT_DAYS_OF_NOT_LEAP_YEAR = 28;
         int FEBRUARY = 2;
         if ((year < MIN) || ((month < MIN) || (month > MAX_COUNT_OF_MONTH)) || ((day < MIN) || (day > MAX_COUNT_OF_DAY))) {
             return false;
         }
-        if (MONTH_WHICH_MAX_30_DAYS.contains(month)) {
+        if (monthWhichMax30Days.contains(month)) {
             if (day > MAX_COUNT_OF_DAY - 1) {
                 return false;
             }
@@ -96,34 +96,25 @@ public class Date_Netcracker {
         return dayOfWeek;
     }
 
-    public String getStringDayOfWeek(int d) {
-        String dayOfWeek = "";
-        switch (d) {
-            case 0:
-                dayOfWeek = "Monday";
-                break;
-            case 1:
-                dayOfWeek = "Tuesday";
-                break;
-            case 2:
-                dayOfWeek = "Wednesday";
-                break;
-            case 3:
-                dayOfWeek = "Thursday";
-                break;
-            case 4:
-                dayOfWeek = "Friday";
-                break;
-            case 5:
-                dayOfWeek = "Saturday";
-                break;
-            case 6:
-                dayOfWeek = "Sunday";
-                break;
-        }
-        return dayOfWeek;
-    }
+    enum StringDayOfWeek {
+        Monday(0),
+        Tuesday(1),
+        Wednesday(2),
+        Thursday(3),
+        Friday(4),
+        Saturday(5),
+        Sunday(6);
 
+        private int val;
+
+        public int getVal() {
+            return val;
+        }
+
+        StringDayOfWeek(int val) {
+            this.val = val;
+        }
+    }
 
     public int countDays() {
         int y = year;
@@ -172,7 +163,7 @@ public class Date_Netcracker {
     @Override
     public String toString() {
         String BeatifulDate = "";
-        return BeatifulDate = getStringDayOfWeek(getDayOfWeek()) + " " + day + " " + MonthsString.values()[month - 1] + " " + year;
+        return BeatifulDate = StringDayOfWeek.values()[getDayOfWeek()] + " " + day + " " + MonthsString.values()[month - 1] + " " + year;
     }
 
 }
